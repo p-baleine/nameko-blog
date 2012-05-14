@@ -2,6 +2,7 @@ defineModels = (mongoose, mongooseAuth, fn) ->
     Schema = mongoose.Schema
     ObjectId = Schema.ObjectId
 
+    # ブログ投稿
     BlogPost = new Schema
         user: type: ObjectId, ref: 'User'
         content: String
@@ -10,8 +11,9 @@ defineModels = (mongoose, mongooseAuth, fn) ->
     BlogPost.virtual('id')
         .get -> @._id.toHexString()
 
-    User = new Schema
-    User.plugin mongooseAuth,
+    # ユーザー
+    UserSchema = new Schema
+    UserSchema.plugin mongooseAuth,
         everymodule:
             everyauth:
                 User: -> User
@@ -29,7 +31,9 @@ defineModels = (mongoose, mongooseAuth, fn) ->
                 registerSuccessRedirect: '/'
 
     mongoose.model 'BlogPost', BlogPost
-    mongoose.model 'User', User
+    BlogPosts = exports.BlogPosts = mongoose.model 'BlogPost'
+    mongoose.model 'User', UserSchema
+    User = exports.User = mongoose.model 'User'
     fn()
 
 exports.defineModels = defineModels

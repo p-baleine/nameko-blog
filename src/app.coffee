@@ -3,6 +3,7 @@ routes = require '../routes'
 models = require './models'
 mongoose = require 'mongoose'
 mongooseAuth = require 'mongoose-auth'
+Resource = require 'express-resource'
 
 app = module.exports = express.createServer()
 
@@ -25,8 +26,6 @@ app.configure 'production', ->
     app.use express.errorHandler()
 
 models.defineModels mongoose, mongooseAuth, ->
-    app.BlogPost = mongoose.model 'BlogPost'
-    app.User = mongoose.model 'User'
     db = mongoose.connect app.set 'connstring'
     app.use mongooseAuth.middleware()
 
@@ -34,8 +33,16 @@ models.defineModels mongoose, mongooseAuth, ->
 
 app.get '/', (req, res) ->
     console.log req.user
+    res.render 'index'
+
+app.get '/logout', (req, res) ->
+    req.logout()
+    res.redirect '/'
 
 mongooseAuth.helpExpress app
 
+app.resource 'blogposts', require('./blogposts')
+
 app.listen 3000, ->
-    console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env
+    console.log "Express server listening on port %d in %s mode",
+        app.address().port, app.settings.env
