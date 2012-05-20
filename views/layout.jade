@@ -2,7 +2,8 @@
 html
   head
     title nameko-blog
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/application.css')
+    script(src='/application.js')
   body
     if everyauth.user
       a(href="logout") Sign out

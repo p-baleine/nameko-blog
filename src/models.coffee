@@ -4,8 +4,8 @@ defineModels = (mongoose, mongooseAuth, fn) ->
 
     # ブログ投稿
     BlogPost = new Schema
-        user: type: ObjectId, ref: 'User'
-        content: String
+        user: type: ObjectId, ref: 'User', required: true
+        content: type: String, required: true
         insert_ts: type: Date, default: Date.now
         update_ts: type: Date, default: Date.now
     BlogPost.virtual('id')
@@ -31,7 +31,7 @@ defineModels = (mongoose, mongooseAuth, fn) ->
                 registerSuccessRedirect: '/'
 
     mongoose.model 'BlogPost', BlogPost
-    BlogPosts = exports.BlogPosts = mongoose.model 'BlogPost'
+    BlogPost = exports.BlogPost = mongoose.model 'BlogPost'
     mongoose.model 'User', UserSchema
     User = exports.User = mongoose.model 'User'
     fn()
