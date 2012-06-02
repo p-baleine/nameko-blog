@@ -2,11 +2,39 @@
 html
   head
     title nameko-blog
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.css')
     link(rel='stylesheet', href='/application.css')
     script(src='/application.js')
+    script()
+      window.jQuery = require("jqueryify");
+      require("jquery.tmpl");
+      var exports = this;
+      jQuery(function(){
+        var App = require("index");
+        exports.app = new App({el: $("body")});      
+      });
+    script(src='/bootstrap/js/bootstrap.js')
   body
-    if everyauth.user
-      a(href="logout") Sign out
-    else
-      a(href="login") Sign In
-    != body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand Project name
+          .btn-group.pull-right
+            a.btn.dropdown-toggle(data-toggle='dropdown', href='#')
+              i.icon-user
+              span.caret
+            ul.dropdown-menu
+              li
+                a Profile
+              li.divider
+              li
+                if everyauth.user
+                  a(href="/logout") Sign Out
+                else
+                  a(href="/login") Sign In
+    .container
+      != body

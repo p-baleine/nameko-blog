@@ -1,0 +1,5 @@
+--require should
+--require growl
+--reporter spec
+--ui bdd
+--compilers coffee:coffee-script
